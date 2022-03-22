@@ -14,13 +14,29 @@ let upMove = false;
 let downMove = false;
 let ballColor = "green";
 let sprint = false;
+let gamestart = false;
+
+
+// Gates
+let grx = 900;
+let gry = 600;
+
+
+
 
 requestAnimationFrame(draw)
-
-
-
-//
 function draw() {
+    //Game Starting
+    if(x !== 100 || y !== 100){
+        gamestart = true;
+    }
+    //Move blocks when player moves
+         
+    if(gamestart){
+        
+            
+    }
+
     //Movement Handler
     let speed = 5;
     if(sprint){
@@ -44,14 +60,21 @@ function draw() {
         y += speed;
         ballColor ="yellow";
     }
+
     //Filling Blank Canv
     ctx.fillStyle = "black";
     ctx.fillRect(0,0,cnv.width,cnv.height);
+
     //Making the Ball/Circle
     ctx.fillStyle = ballColor;
     ctx.beginPath();
     ctx.arc(x , y ,  15, 0 , 2 * Math.PI)
     ctx.fill();
+    
+    //Draw
+    ctx.fillStyle = "green";
+    ctx.fillRect(grx, gry, 25, 100);
+
     requestAnimationFrame(draw)
 }
 
