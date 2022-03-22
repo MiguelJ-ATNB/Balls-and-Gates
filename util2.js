@@ -6,6 +6,7 @@ cnv.height = 800;
 // Position
 let x = 100;
 let y = 100;
+let r = 15;
 
 //Move Variables
 let rightMove = false;
@@ -18,6 +19,7 @@ let gamestart = false;
 
 
 // Gates
+let blockspeed = 6;
 let grx = 900;
 let gry = 600;
 
@@ -33,7 +35,10 @@ function draw() {
     //Move blocks when player moves
          
     if(gamestart){
-        
+        grx -= blockspeed;
+        if(grx<100 || grx >900){
+            blockspeed = -blockspeed
+        }
             
     }
 
@@ -60,7 +65,17 @@ function draw() {
         y += speed;
         ballColor ="yellow";
     }
-
+    //Collision detection
+    if(x < 15){
+        x = 15;
+    }else if (x >985){
+        x = 985
+    }
+    if(y < 15){
+        y = 15;
+    }else if (y >785){
+        y = 785
+    }
     //Filling Blank Canv
     ctx.fillStyle = "black";
     ctx.fillRect(0,0,cnv.width,cnv.height);
@@ -68,7 +83,7 @@ function draw() {
     //Making the Ball/Circle
     ctx.fillStyle = ballColor;
     ctx.beginPath();
-    ctx.arc(x , y ,  15, 0 , 2 * Math.PI)
+    ctx.arc(x , y , r, 0, 2 * Math.PI)
     ctx.fill();
     
     //Draw
