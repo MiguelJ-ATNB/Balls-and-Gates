@@ -22,8 +22,8 @@ let gamestart = false;
 let blockspeed = 6;
 let grx = 900;
 let gry = 600;
-
-
+let gpx = 500;
+let gpy = 500;
 
 
 requestAnimationFrame(draw)
@@ -65,6 +65,7 @@ function draw() {
         y += speed;
         ballColor ="yellow";
     }
+
     //Collision detection
     if(x < 15){
         x = 15;
@@ -86,9 +87,13 @@ function draw() {
     ctx.arc(x , y , r, 0, 2 * Math.PI)
     ctx.fill();
     
-    //Draw
+    //Draw the Gates
     ctx.fillStyle = "green";
     ctx.fillRect(grx, gry, 25, 100);
+
+    //
+
+
 
     requestAnimationFrame(draw)
 }
