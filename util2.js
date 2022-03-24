@@ -16,8 +16,8 @@ let downMove = false;
 let ballColor = "green";
 let sprint = false;
 let gamestart = false;
-
-
+let gamestate = "startup"
+let Restart = false;
 // Gates
 let gblock = true;
 let gblockspeed = 6;
@@ -48,7 +48,10 @@ function MovementHandler(event){
     }else if (event.code === "ArrowDown" || event.code === "KeyS"){
         downMove = true;
     }else if(event.code === "ArrowLeft" || event.code === "KeyA"){
-        leftMove = true;}
+        leftMove = true;
+    }else if(event.code === "Space"){
+        Restart = true;
+    }
     console.log(event.code)
 }
 
@@ -64,6 +67,8 @@ function MoveStopHandler(event){
         downMove = false;
     }else if(event.code === "ShiftLeft"){
         sprint = false;
+    }else if(event.code === "Space"){
+        Restart = false;
     }
 }
 
@@ -71,11 +76,38 @@ requestAnimationFrame(draw)
 
 
 function draw() {
+    if(gamestate === "startup"){
+        startscreen();
+    }else if(gamestate === "gameOn"){
+        gamescreen();
+    }else if(gamestate === "gameOver"){
+        gameOver();
+    }
+}
+
+function startscreen(){
+    //Filling Blank Canv
+    ctx.fillStyle = "black";
+    ctx.fillRect(0,0,cnv.width,cnv.height);
+
+    ctx.font = "30px Arial";
+    ctx.fillStyle = "orange";
+    ctx.fillText("Press the Arrowkeys or WASD to start game", 200,400)
+
+    if(rightMove || leftMove || upMove || downMove){
+        gamestate = "gameOn"
+    }
+    requestAnimationFrame(draw)
+}
+
+function gamescreen(){
+    //Filling Blank Canv
+    ctx.fillStyle = "black";
+    ctx.fillRect(0,0,cnv.width,cnv.height);
+
     //Game Starting
     if(x !== 100 || y !== 100){
         gamestart = true;
-    }else if(gamestart = false){
-
     }
     //Move blocks when player moves
          
@@ -130,7 +162,7 @@ function draw() {
     if(x>prx && x < prx+prWidth && y >pry && y < pry+prHeight && ballColor ==="purple"){
         pblock = false;    
     }else if(x>prx && x < prx+prWidth && y >pry && y < pry+prHeight && ballColor !=="purple"){
-        console.log("GAME OVER")
+        gamestate = "gameOver"
     }
     if(x>grx && x < grx+grWidth && y >gry && y < gry+grHeight && ballColor ==="green"){
         gblock = false;    
@@ -138,21 +170,24 @@ function draw() {
     
 
 
-    //Filling Blank Canv
-    ctx.fillStyle = "black";
-    ctx.fillRect(0,0,cnv.width,cnv.height);
-
+    
 
     //Draw the Gates
     if(gblock){
         ctx.fillStyle = "green";
         ctx.fillRect(grx, gry, grWidth, grHeight);
-    }else{}
+    }else{
+        grWidth = 0;
+        grHeight = 0;
+    }
 
     if(pblock){ 
         ctx.fillStyle = "purple";
         ctx.fillRect(prx, pry, prWidth, prHeight)
-    }else{}
+    }else{
+        prWidth = 0;
+        prHeight = 0;
+    }
 
     
     //Making the Ball/Circle
@@ -164,5 +199,40 @@ function draw() {
     "The man, the light, and the moon"
 
     
+    requestAnimationFrame(draw)
+}
+
+function gameOver(){
+
+    ctx.fillStyle = "black";
+    ctx.fillRect(0,0,cnv.width,cnv.height);
+
+
+    ctx.font = "50px Arial"
+    ctx.fillStyle = "Red"
+    ctx.fillText("GAME OVER", 350, 400)
+    
+    ctx.font = "15px Arial"
+    ctx.fillStyle = "Red"
+    ctx.fillText("Press Space to Continue", 425, 415)
+
+
+    ctx.fillStyle = "green";
+    ctx.fillRect(900,600, 25, 100);
+    
+    ctx.fillStyle = "purple";
+    ctx.fillRect(prx, pry, prWidth, prHeight)
+    
+    
+    //Making the Ball/Circle
+    ctx.fillStyle = ballColor;
+    ctx.beginPath();
+    ctx.arc(x , y , r, 0, 2 * Math.PI)
+    ctx.fill();
+    
+
+    if(Restart){
+        gamestate ="startup"
+    }
     requestAnimationFrame(draw)
 }
