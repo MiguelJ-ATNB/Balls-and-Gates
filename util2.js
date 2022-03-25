@@ -31,6 +31,15 @@ let prx = 500;
 let pry = 500;
 let prWidth = 100;
 let prHeight = 25;
+let purp = "purple"
+let rblock = true;
+let rblockspeed = 14;
+let rrx = 600;
+let rry = 400;
+let rrWidth = 25;
+let rrHeight = 75;
+
+
 
 
 document.addEventListener("keydown", MovementHandler)
@@ -82,6 +91,8 @@ function draw() {
         gamescreen();
     }else if(gamestate === "gameOver"){
         gameOver();
+    }else if(gamestate === "gameWon"){
+        gameWin();
     }
 }
 
@@ -119,7 +130,11 @@ function gamescreen(){
         pry -= pblockspeed;
         if(pry<100 || pry>550){
             pblockspeed = -pblockspeed;
-        };
+        }
+        rrx -= rblockspeed
+        if(rrx<100 || rrx>900){
+            rblockspeed  = -rblockspeed
+        }   
     }
 
     //Movement Handler
@@ -166,11 +181,14 @@ function gamescreen(){
     }
     if(x>grx && x < grx+grWidth && y >gry && y < gry+grHeight && ballColor ==="green"){
         gblock = false;    
+    }else if(x>grx && x < grx+grWidth && y >gry && y < gry+grHeight && ballColor !=="green"){
+        gamestate = "gameOver"
+    } 
+    if(x>rrx && x < rrx+rrWidth && y >rry && y < rry+rrHeight && ballColor === "red"){
+        rblock = false;    
+    }else if(x>rrx && x < rrx+rrWidth && y >rry && y < rry+rrHeight && ballColor !=="red"){
+        gamestate = "gameOver"
     }
-    
-
-
-    
 
     //Draw the Gates
     if(gblock){
@@ -182,14 +200,24 @@ function gamescreen(){
     }
 
     if(pblock){ 
-        ctx.fillStyle = "purple";
+        ctx.fillStyle = purp;
         ctx.fillRect(prx, pry, prWidth, prHeight)
     }else{
         prWidth = 0;
         prHeight = 0;
     }
+    if(rblock){
+        ctx.fillStyle = "red";
+        ctx.fillRect(rrx, rry, rrWidth, rrHeight)
+    }else{
+        rrWidth = 0;
+        rrHeight = 0;
+    }
 
-    
+    // if(bblock){}
+
+    // if(yblock){}
+
     //Making the Ball/Circle
     ctx.fillStyle = ballColor;
     ctx.beginPath();
@@ -198,16 +226,20 @@ function gamescreen(){
     
     "The man, the light, and the moon"
 
-    
+    //How to Win the game
+
+    if(grHeight === 0 && grWidth === 0 && prHeight === 0 && prWidth === 0 && rrHeight === 0 && rrWidth === 0){
+        gamestate = "gameWon"
+    }
+
     requestAnimationFrame(draw)
 }
 
 function gameOver(){
-
+    //Clear screen, Kinda
     ctx.fillStyle = "black";
     ctx.fillRect(0,0,cnv.width,cnv.height);
-
-
+    //Display game over
     ctx.font = "50px Arial"
     ctx.fillStyle = "Red"
     ctx.fillText("GAME OVER", 350, 400)
@@ -215,21 +247,74 @@ function gameOver(){
     ctx.font = "15px Arial"
     ctx.fillStyle = "Red"
     ctx.fillText("Press Space to Continue", 425, 415)
-
-
-    ctx.fillStyle = "green";
-    ctx.fillRect(900,600, 25, 100);
     
-    ctx.fillStyle = "purple";
-    ctx.fillRect(prx, pry, prWidth, prHeight)
-    
-    
-    //Making the Ball/Circle
     ctx.fillStyle = ballColor;
     ctx.beginPath();
     ctx.arc(x , y , r, 0, 2 * Math.PI)
     ctx.fill();
+
+    ctx.fillStyle = "purple";
+    ctx.fillRect(prx, pry, prWidth, prHeight)
     
+    ctx.fillStyle = "green";
+    ctx.fillRect(grx, gry, grWidth, grHeight);
+
+    // Reset the values
+    x = 100;
+    y = 100;
+    gblock = true;
+    grx = 900;
+    gry = 600;
+    grWidth = 25;
+    grHeight = 100;
+    pblock = true;
+    prx = 500;
+    pry = 500;
+    prWidth = 100;
+    prHeight = 25;
+    rblock = true;
+    rrx = 600;
+    rry = 400;
+    rrWidth = 25;
+    rrHeight = 75;
+
+    if(Restart){
+        gamestate ="startup"
+    }
+    requestAnimationFrame(draw)
+}
+
+function gameWin(){
+    //Clear screen, Kinda
+    ctx.fillStyle = "black";
+    ctx.fillRect(0,0,cnv.width,cnv.height);
+    //Display game over
+    ctx.font = "50px Arial"
+    ctx.fillStyle = "White"
+    ctx.fillText("WINNER", 395, 400)
+    
+    ctx.font = "15px Arial"
+    ctx.fillStyle = "White"
+    ctx.fillText("Press F to go to the next stage", 395, 415)
+    
+    // Reset the values
+    x = 100;
+    y = 100;
+    gblock = true;
+    grx = 900;
+    gry = 600;
+    grWidth = 25;
+    grHeight = 100;
+    pblock = true;
+    prx = 500;
+    pry = 500;
+    prWidth = 100;
+    prHeight = 25;
+    rblock = true;
+    rrx = 600;
+    rry = 400;
+    rrWidth = 25;
+    rrHeight = 75;
 
     if(Restart){
         gamestate ="startup"
