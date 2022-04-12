@@ -4,10 +4,19 @@ html{
 body{
     text-align: center;
 }
-h1{
+h2{  
     color: white;
+    margin: 20px 0px 5px 0px;
 }
 
 canvas{
     border: 2px solid white;
+}
+
+.small{
+    font-size: 20px;
+}
+
+#hidden{
+    display: none;
 }
