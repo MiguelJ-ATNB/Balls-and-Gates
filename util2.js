@@ -17,9 +17,8 @@ let ballColor = "green";
 let sprint = false;
 //Game Variables
 let gamestart = false;
-let gamestate = "startup"
+let gamestate = "lvl3"
 let Restart = false;
-let lvl = 0;
 // gates
 let gblock = true;
 let gblockspeed = 6;
@@ -101,7 +100,7 @@ function MoveStopHandler(event){
     }
 }
 
-//GAME GOES BRRRRR
+//GAME GOES brrrrrrrrrrr
 
 requestAnimationFrame(draw)
 function draw() {
@@ -149,9 +148,7 @@ function gameOver(){
     ctx.arc(x , y , r, 0, 2 * Math.PI)
     ctx.fill();
     
-    //Reset X/Y 
-    x = 100
-    y = 100
+    
 
     if(Restart){
         gamestate ="startup"
@@ -184,6 +181,8 @@ function game(){
     //Loading positions:
     if(gamestate === "lvl1"){  
         //Reset the values
+        x = 100
+        y = 100
         gblock = true;
         gblockspeed = 6;
         grx = 900;
@@ -273,10 +272,12 @@ function game(){
         brHeight = 100;
         yblock = true;
         yrx = 400;
-        yry = 640;
+        yry = 340;
+        yblockspeedx = 8;
+        yblockspeedy = 9;
         yrWidth = 25;
         yrHeight = 100;
-        timestop_TL = 100;
+        timestop_TL = 250;
         gamestate = "lvl3R";
     } 
 
@@ -315,35 +316,54 @@ function game(){
             yblockspeedx = -yblockspeedx;
         }else if (yry >= 640 || yry <= 100){
             yblockspeedy = -yblockspeedy;
-        };  
+        };
         bry += bblockspeed;
         if(bry >= 640 || bry <= 100){
             bblockspeed = -bblockspeed;
         };
     }else if(gamestart && gamestate === "lvl3R"){
+        let randNum = Math.random();
+        let randNum2 = Math.random();
         grx -= gblockspeed;
         if(grx<100 || grx >900){
             gblockspeed = -gblockspeed;
         };
         pry -= pblockspeed;
         if(pry<100 || pry>550){
-            pblockspeed = -pblockspeed;
+            pblockspeed = -pblockspeed; 
         };
         rrx -= rblockspeed
-        if(rrx<100 || rrx>900){
-            rblockspeed  = -rblockspeed
+        if(rrx< 0){
+            rrx = cnv.width - rrWidth
         };
-        yrx += yblockspeedx;
-        yry += yblockspeedy;
-        if(yrx <= 200 || yrx >= 700){
-            yblockspeedx = -yblockspeedx;
-        }else if (yry >= 640 || yry <= 100){
-            yblockspeedy = -yblockspeedy;
-        };  
+        // if(randNum <0.25){
+        //     yrx += yblockspeedx;
+        //     yry += yblockspeedy;
+        // }else if(randNum <0.5){
+        //     yrx -= yblockspeedx;
+        //     yry += yblockspeedy;
+        // }else if(randNum <0.75){
+        //     yrx -= yblockspeedx;
+        //     yry -= yblockspeedy;
+        // }else{
+        //     yrx += yblockspeedx;
+        //     yry -= yblockspeedy;
+        // }
+        if(yrx <= 0 || yrx >= cnv.width - 25){
+        yblockspeedx = -yblockspeedx;
+        }else if (yry >= cnv.height - 100 || yry <= 0){
+        yblockspeedy = -yblockspeedy;
+        };
         bry += bblockspeed;
-        if(bry >= 640 || bry <= 100){
-            bblockspeed = -bblockspeed;
-        };
+        if(bry >= cnv.height - brHeight || bry <= 0){
+            if(randNum2 > 0.5){
+                bblockspeed = -bblockspeed;
+            }else if(bry <=0){
+                bry = cnv.height - brHeight
+            }else if(bry >= cnv.height - brHeight){
+                bry = 0
+            }
+        }
     }
     //Movement Handler
     if(sprint){
