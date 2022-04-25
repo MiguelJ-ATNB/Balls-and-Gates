@@ -275,6 +275,15 @@ function game(){
         yry = 340;
         yblockspeedx = 8;
         yblockspeedy = 9;
+        if(Math.random()<0.5){
+            yblockspeedx = -yblockspeedx
+        }else{
+            yblockspeedx = yblockspeedx
+        }if(Math.random()<0.5){
+            yblockspeedy = -yblockspeedy
+        }else{
+            yblockspeedy = yblockspeedy
+        }
         yrWidth = 25;
         yrHeight = 100;
         timestop_TL = 250;
@@ -323,32 +332,25 @@ function game(){
         };
     }else if(gamestart && gamestate === "lvl3R"){
         let randNum = Math.random();
-        let randNum2 = Math.random();
         grx -= gblockspeed;
         if(grx<100 || grx >900){
             gblockspeed = -gblockspeed;
         };
         pry -= pblockspeed;
         if(pry<100 || pry>550){
-            pblockspeed = -pblockspeed; 
+            pblockspeed = -pblockspeed;
+            if(prx < 790){
+                prx += 30
+            }else {
+                prx = 100
+            }
         };
         rrx -= rblockspeed
         if(rrx< 0){
             rrx = cnv.width - rrWidth
         };
-        // if(randNum <0.25){
-        //     yrx += yblockspeedx;
-        //     yry += yblockspeedy;
-        // }else if(randNum <0.5){
-        //     yrx -= yblockspeedx;
-        //     yry += yblockspeedy;
-        // }else if(randNum <0.75){
-        //     yrx -= yblockspeedx;
-        //     yry -= yblockspeedy;
-        // }else{
-        //     yrx += yblockspeedx;
-        //     yry -= yblockspeedy;
-        // }
+        yrx += yblockspeedx;
+        yry += yblockspeedy;
         if(yrx <= 0 || yrx >= cnv.width - 25){
         yblockspeedx = -yblockspeedx;
         }else if (yry >= cnv.height - 100 || yry <= 0){
@@ -356,7 +358,7 @@ function game(){
         };
         bry += bblockspeed;
         if(bry >= cnv.height - brHeight || bry <= 0){
-            if(randNum2 > 0.5){
+            if(randNum > 0.5){
                 bblockspeed = -bblockspeed;
             }else if(bry <=0){
                 bry = cnv.height - brHeight
@@ -403,29 +405,29 @@ function game(){
     }
     
     //GATE DETECTION
-    if(x>prx && x < prx+prWidth && y >pry && y < pry+prHeight && ballColor ==="purple"){
+    if(x+r >prx && x-r <prx+prWidth && y+r >pry && y-r <pry+prHeight && ballColor ==="purple"){
         pblock = false;    
-    }else if(x>prx && x < prx+prWidth && y >pry && y < pry+prHeight){
+    }else if(x+r >prx && x-r <prx+prWidth && y+r >pry && y-r <pry+prHeight){
         gamestate = "gameOver"
     }
-    if(x>grx && x < grx+grWidth && y >gry && y < gry+grHeight && ballColor ==="green"){
+    if(x+r >grx && x-r <grx+grWidth && y+r >gry && y-r <gry+grHeight && ballColor ==="green"){
         gblock = false;    
-    }else if(x>grx && x < grx+grWidth && y >gry && y < gry+grHeight){
+    }else if(x+r >grx && x-r <grx+grWidth && y+r >gry && y-r <gry+grHeight){
         gamestate = "gameOver"
     } 
-    if(x>rrx && x < rrx+rrWidth && y >rry && y < rry+rrHeight && ballColor === "red"){
+    if(x+r >rrx && x-r <rrx+rrWidth && y+r >rry && y-r <rry+rrHeight && ballColor === "red"){
         rblock = false;    
-    }else if(x>rrx && x < rrx+rrWidth && y >rry && y < rry+rrHeight){
+    }else if(x+r >rrx && x-r <rrx+rrWidth && y+r >rry && y-r <rry+rrHeight){
         gamestate = "gameOver"
     }
-    if(x>brx && x < brx+brWidth && y >bry && y < bry+brHeight && ballColor === "blue"){
+    if(x+r >brx && x-r <brx+brWidth && y+r >bry && y-r <bry+brHeight && ballColor === "blue"){
         bblock = false;    
-    }else if(x>brx && x < brx+brWidth && y >bry && y < bry+brHeight){
+    }else if(x+r >brx && x-r <brx+brWidth && y+r >bry && y-r <bry+brHeight){
         gamestate = "gameOver"
     }
-    if(x>yrx && x < yrx+yrWidth && y > yry && y < yry+yrHeight && ballColor === "yellow"){
+    if(x+r >yrx && x-r <yrx+yrWidth && y+r >yry && y-r <yry+yrHeight && ballColor === "yellow"){
         yblock = false;    
-    }else if(x>yrx && x < yrx+yrWidth && y > yry && y < yry+yrHeight){
+    }else if(x+r >prx && x-r <prx+prWidth && y+r >pry && y-r <yry+prHeight){
         gamestate = "gameOver"
     }
 
