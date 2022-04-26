@@ -17,9 +17,9 @@ let ballColor = "green";
 let sprint = false;
 //Game Variables
 let gamestart = false;
-let gamestate = "lvl3"
+let gamestate = "startup"
 let Restart = false;
-// gates
+// Gates
 let gblock = true;
 let gblockspeed = 6;
 let grx = 900;
@@ -100,7 +100,7 @@ function MoveStopHandler(event){
     }
 }
 
-//GAME GOES brrrrrrrrrrr
+//Draw game function 
 
 requestAnimationFrame(draw)
 function draw() {
@@ -201,40 +201,33 @@ function game(){
         rry = 400;
         rrWidth = 25;
         rrHeight = 75;
-        bblock = true;
-        bblockspeed = 6;
-        brx = 0;
-        bry = 0;
-        brWidth = 0;
-        brHeight = 0;
-        yblock = true;
-        yblockspeedx = 6;
-        yblockspeedy = 6;
-        yrx = 0;
-        yry = 0;
-        yrWidth = 0;
-        yrHeight = 0;
+        bblock = false;
+        yblock = false;
         gamestate = "lvl1R"
     }else if(gamestate === "lvl2"){
         //Set the values for the stage
         x = 100;
         y = 100;
         gblock = true;
+        gblockspeed = 6;
         grx = 300;
         gry = 200;
         grWidth = 25;
         grHeight = 100;
         pblock = true;
+        pblockspeed = 6;
         prx = 100;
         pry = 500;
         prWidth = 100;
         prHeight = 25;
         rblock = true;
+        rblockspeed = 14;
         rrx = 300;
         rry = 400;
         rrWidth = 25;
         rrHeight = 75;
         bblock = true;
+        bblockspeed = 6;
         brx = 532;
         bry = 600;
         brWidth = 25;
@@ -245,27 +238,31 @@ function game(){
         yrWidth = 25;
         yrHeight = 100;
         timestop_TL = 100;
-        gamestate = "lvl2R";
+        gamestate = "lvl2R";     
     }else if(gamestate === "lvl3"){
         //Set the values for the stage
         x = 100;
         y = 100;
         gblock = true;
+        gblockspeed = 6;
         grx = 800;
         gry = 300;
         grWidth = 25;
         grHeight = 100;
         pblock = true;
+        pblockspeed = 6;
         prx = 100;
         pry = 500;
         prWidth = 100;
         prHeight = 25;
         rblock = true;
+        rblockspeed = 14;
         rrx = 300;
         rry = 400;
         rrWidth = 25;
         rrHeight = 75;
         bblock = true;
+        bblockspeed = 6;
         brx = 532;
         bry = 600;
         brWidth = 25;
@@ -407,27 +404,27 @@ function game(){
     //GATE DETECTION
     if(x+r >prx && x-r <prx+prWidth && y+r >pry && y-r <pry+prHeight && ballColor ==="purple"){
         pblock = false;    
-    }else if(x+r >prx && x-r <prx+prWidth && y+r >pry && y-r <pry+prHeight){
+    }else if(x+r >prx && x-r <prx+prWidth && y+r >pry && y-r <pry+prHeight && ballColor !=="purple"){
         gamestate = "gameOver"
     }
     if(x+r >grx && x-r <grx+grWidth && y+r >gry && y-r <gry+grHeight && ballColor ==="green"){
         gblock = false;    
-    }else if(x+r >grx && x-r <grx+grWidth && y+r >gry && y-r <gry+grHeight){
+    }else if(x+r >grx && x-r <grx+grWidth && y+r >gry && y-r <gry+grHeight && ballColor !=="green"){
         gamestate = "gameOver"
     } 
     if(x+r >rrx && x-r <rrx+rrWidth && y+r >rry && y-r <rry+rrHeight && ballColor === "red"){
         rblock = false;    
-    }else if(x+r >rrx && x-r <rrx+rrWidth && y+r >rry && y-r <rry+rrHeight){
+    }else if(x+r >rrx && x-r <rrx+rrWidth && y+r >rry && y-r <rry+rrHeight && ballColor !== "red"){
         gamestate = "gameOver"
     }
     if(x+r >brx && x-r <brx+brWidth && y+r >bry && y-r <bry+brHeight && ballColor === "blue"){
         bblock = false;    
-    }else if(x+r >brx && x-r <brx+brWidth && y+r >bry && y-r <bry+brHeight){
+    }else if(x+r >brx && x-r <brx+brWidth && y+r >bry && y-r <bry+brHeight && ballColor !== "blue"){
         gamestate = "gameOver"
     }
     if(x+r >yrx && x-r <yrx+yrWidth && y+r >yry && y-r <yry+yrHeight && ballColor === "yellow"){
         yblock = false;    
-    }else if(x+r >prx && x-r <prx+prWidth && y+r >pry && y-r <yry+prHeight){
+    }else if(x+r >yrx && x-r <yrx+yrWidth && y+r >yry && y-r <yry+yrHeight && ballColor !== "yellow"){
         gamestate = "gameOver"
     }
 
@@ -436,6 +433,8 @@ function game(){
         ctx.fillStyle = "green";
         ctx.fillRect(grx, gry, grWidth, grHeight);
     }else{
+        grx = -100;
+        gry = -100;
         grWidth = 0;
         grHeight = 0;
     }
@@ -443,6 +442,8 @@ function game(){
         ctx.fillStyle = purp;
         ctx.fillRect(prx, pry, prWidth, prHeight)
     }else{
+        prx = -100;
+        pry = -100;
         prWidth = 0;
         prHeight = 0;
     }
@@ -450,6 +451,8 @@ function game(){
         ctx.fillStyle = "red";
         ctx.fillRect(rrx, rry, rrWidth, rrHeight)
     }else{
+        rrx = -100;
+        rry = -100;
         rrWidth = 0;
         rrHeight = 0;
     }
@@ -457,15 +460,26 @@ function game(){
         ctx.fillStyle = "blue";
         ctx.fillRect(brx, bry, brWidth, brHeight)
     }else{
+        brx = -100;
+        bry = -100;
         brWidth = 0;
         brHeight = 0;
     }if(yblock){
         ctx.fillStyle = "yellow";
         ctx.fillRect(yrx, yry, yrWidth, yrHeight)
     }else{
+        yrx = -100;
+        yry = -100;
         yrWidth = 0;
         yrHeight = 0;
     }
+    //Help text
+    if(gamestate === "lvl2R"){
+        ctx.font="12px Arial"
+        ctx.fillStyle = "white"
+        ctx.fillText("Press G to stop time.", 15, 15)
+    }
+
     //Making the Ball/Circle
     ctx.fillStyle = ballColor;
     ctx.beginPath();
@@ -499,7 +513,7 @@ function gameWon(){
         
         ctx.font = "15px Arial"
         ctx.fillStyle = "White"
-        ctx.fillText("Good stuff, took me way too long to code this", 285, 425)
+        ctx.fillText("Good stuff, it took me way too long to finish this", 305, 425)
     }else{
         //Display game won
         ctx.font = "50px Arial"
